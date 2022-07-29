@@ -29,7 +29,7 @@ public class UsuarioController {
 	public String home(Model model, Principal principal) {
 		List<Pedido> pedidos = repository.findAllByUsuario(principal.getName());
 		model.addAttribute("pedidos", pedidos);
-		return "home";
+		return "usuario/home";
 	}
 
 	@GetMapping("pedido/{status}")
@@ -38,7 +38,7 @@ public class UsuarioController {
 				principal.getName());
 		model.addAttribute("pedidos", pedidos);
 		model.addAttribute("status", status);
-		return "home";
+		return "usuario/home";
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
