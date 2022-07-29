@@ -3,7 +3,6 @@ package br.com.alura.mvc.mudi.controller;
 import java.security.Principal;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,29 +15,34 @@ import br.com.alura.mvc.mudi.model.StatusPedido;
 import br.com.alura.mvc.mudi.repository.PedidoRepository;
 
 @Controller
-@RequestMapping("/home")
-public class HomeController {
-	
-	@Autowired
+@RequestMapping("usuario")
+public class UsuarioController {
+
 	private PedidoRepository repository;
-	
-	@GetMapping()
-	public String home(Model model, Principal principal) {
-		List<Pedido> pedidos = repository.findAll();
-		model.addAttribute("pedidos", pedidos);
-		return "home"; 
+
+	public UsuarioController(PedidoRepository pedidoRepository) {
+		super();
+		this.repository = pedidoRepository;
 	}
-	
-	@GetMapping("/{status}")
-	public String porStatus(@PathVariable("status") String status, Model model) {
-		List<Pedido> pedidos = repository.findByStatus(StatusPedido.valueOf(status.toUpperCase()));
+
+	@GetMapping("pedido")
+	public String home(Model model, Principal principal) {
+		List<Pedido> pedidos = repository.findAllByUsuario(principal.getName());
+		model.addAttribute("pedidos", pedidos);
+		return "home";
+	}
+
+	@GetMapping("pedido/{status}")
+	public String porStatus(@PathVariable("status") String status, Model model, Principal principal) {
+		List<Pedido> pedidos = repository.findByStatusEUsuario(StatusPedido.valueOf(status.toUpperCase()),
+				principal.getName());
 		model.addAttribute("pedidos", pedidos);
 		model.addAttribute("status", status);
-		return "home"; 
+		return "home";
 	}
-	
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public String onError() {
-		return "redirect:/home";
+		return "redirect:/usuario/home";
 	}
 }
