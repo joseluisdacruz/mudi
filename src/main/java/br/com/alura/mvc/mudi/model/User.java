@@ -2,7 +2,9 @@ package br.com.alura.mvc.mudi.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,7 +20,7 @@ public class User {
 	
 	private String enabled;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Pedido> pedidos;
 	
 	public List<Pedido> getPedidos() {
