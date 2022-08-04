@@ -55,7 +55,7 @@ public class RequisicaoNovaOferta {
 		oferta.setComentario(comentario);
 		oferta.setDataDaEntrega(LocalDate.parse(dataDaEntrega, formatter));
 		oferta.setValor(new BigDecimal(valor));
-		return null;
+		return oferta;
 	}
 	
 	
